@@ -18,12 +18,12 @@
 	public class Shape2 extends Application
 	{
 		private String shape = "", color ="";
+		private static String[] validColors;
+		private static String[] validShapes;
 	    
 		public void start (Stage stage)
 		{
-			//Make array of valid input
-			String colorValid[] = {"orange", "blue", "grey"};
-			String shapeValid[] = {"semi-circle", "rectangle", "pentagon"};
+
 			
 			//create and configure text field for input of shape
 			TextField inputShape = new TextField();
@@ -46,8 +46,6 @@
 			//create and configure canvas
 			 Canvas canvas = new Canvas(300,250);
 			 GraphicsContext gc = canvas.getGraphicsContext2D();
-			//set a stroke color on canvas
-
 		     
 			//create a non-editable text area to display the results
 			TextArea display = new TextArea();
@@ -60,16 +58,7 @@
 			buttonShape.setText("Go!");
 			buttonShape.setOnAction( e ->                     
 			{ 
-				//check if the input is valid.
-				if(Arrays.asList(shapeValid).contains(inputShape.getText().toLowerCase()))
-				{
-					shape = inputShape.getText().toLowerCase();
-					drawShape(gc, shape, color, display);
-				}
-				else
-				{
-					display.setText("Please enter a valid shape. (semi-circle, rectangle, or pentagon)"); 
-				}
+				clickAction(validShapes, inputShape, gc, display);
 			     
 			});
 			
@@ -79,16 +68,7 @@
 			buttonColor.setText("Go!");
 			buttonColor.setOnAction( e ->   
 			{ 
-				//check if the input is valid.
-				if(Arrays.asList(colorValid).contains(inputColor.getText().toLowerCase()))
-				{
-					color = inputColor.getText().toLowerCase();
-					drawShape(gc, shape, color, display);
-				}
-				else
-				{
-					display.setText("Please enter a valid color. (orange, blue, or grey)"); 
-				}
+				clickAction(validColors, inputColor, gc, display);
 			     
 			});
 			
@@ -112,24 +92,18 @@
 			Scene scene = new Scene(root, 750, 550);
 			stage.setScene(scene);
 			stage.setTitle("Shapes");
-			stage.show();
-			
-				
+			stage.show();				
 		}
 		
-		public GraphicsContext drawShape(GraphicsContext gc, String shapeIn, String colorIn, TextArea displayIn)
+		
+		public static void setValidColors(String[] array)
 		{
-
-			 	//clear canvas
-				gc.clearRect(0, 0, 300,250);
-				
-				//set text on display			
-				displayIn.setText("Success!"); 
-				
-			 	setColor(gc, colorIn);
-				setShape(gc, shapeIn, displayIn);
-				
-				return gc;
+			validColors = array;
+		}
+		
+		public static void setValidShapes(String[] array)
+		{
+			validShapes = array;
 		}
 		
 		public GraphicsContext setColor(GraphicsContext gc, String colorIn)
@@ -185,12 +159,63 @@
 			return gc;
 		}
 		
+		public GraphicsContext drawShape(GraphicsContext gc, String shapeIn, String colorIn, TextArea displayIn)
+		{
+			 	//clear canvas
+				gc.clearRect(0, 0, 300,250);
+				
+				//set text on display			
+				displayIn.setText("Success!"); 
+				
+			 	setColor(gc, colorIn);
+				setShape(gc, shapeIn, displayIn);
+				
+				return gc;
+		}
+		
+		public void clickAction(String[] validInput, TextField input, GraphicsContext gc,TextArea displayIn)
+		{	
+			//check if the input is valid.
+			if(Arrays.asList(validInput).contains(input.getText().toLowerCase()))
+			{
+	
+				if (validInput == validColors)
+				{
+					color = input.getText().toLowerCase();
+					drawShape(gc, shape, color, displayIn);				
+				}
+				else if (validInput == validShapes)
+				{
+					shape = input.getText().toLowerCase();
+					drawShape(gc, shape, color, displayIn);				
+				}			
+	
+			}
+			else
+			{
+				if (validInput == validColors)
+				{
+					displayIn.setText("Please enter a valid color. " + Arrays.toString(validColors)); 				
+				}
+				else if (validInput == validShapes)
+				{
+					displayIn.setText("Please enter a valid shape. " + Arrays.toString(validShapes)); 				
+				}				
+			}
+		}
 		
 		
+
+		
+
+		//main
 		public static void main(String[] args)
 		{
+			setValidColors(new String [] {"orange", "blue", "grey"});
+			setValidShapes(new String [] {"semi-circle", "rectangle", "pentagon"});
 			
 			launch(args);
+			
 		}
 		
 	
