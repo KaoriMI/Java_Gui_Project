@@ -23,7 +23,6 @@
 	    
 		public void start (Stage stage)
 		{
-
 			
 			//create and configure text field for input of shape
 			TextField inputShape = new TextField();
@@ -58,20 +57,34 @@
 			buttonShape.setText("Go!");
 			buttonShape.setOnAction( e ->                     
 			{ 
-				clickAction(validShapes, inputShape, gc, display);
-			     
-			});
-			
+			  if(Arrays.asList(validShapes).contains(inputShape.getText().toLowerCase()))
+			  {
+					shape = inputShape.getText().toLowerCase();
+					drawShape(gc, shape, color, display);				
+			  }
+			  else
+			  {
+				  display.setText("Please enter a valid color. " + Arrays.toString(validColors));
+			  }
+   
+			});			
 
 			//button to apply color
 			Button buttonColor = new Button();
 			buttonColor.setText("Go!");
 			buttonColor.setOnAction( e ->   
 			{ 
-				clickAction(validColors, inputColor, gc, display);
-			     
-			});
-			
+				if(Arrays.asList(validColors).contains(inputColor.getText().toLowerCase()))
+				{
+					color = inputColor.getText().toLowerCase();
+					drawShape(gc, shape, color, display);			
+				}
+				else
+				{
+					display.setText("Please enter a valid shape. " + Arrays.toString(validShapes)); 						
+				}
+	     
+			});			
 		
 			//create horizontal box for shape
 			HBox inputComponentsShape = new HBox (15);
@@ -161,51 +174,17 @@
 		
 		public GraphicsContext drawShape(GraphicsContext gc, String shapeIn, String colorIn, TextArea displayIn)
 		{
-			 	//clear canvas
-				gc.clearRect(0, 0, 300,250);
-				
-				//set text on display			
-				displayIn.setText("Success!"); 
-				
-			 	setColor(gc, colorIn);
-				setShape(gc, shapeIn, displayIn);
-				
-				return gc;
+		 	//clear canvas
+			gc.clearRect(0, 0, 300,250);
+			
+			//set text on display			
+			displayIn.setText("Success!"); 
+			
+		 	setColor(gc, colorIn);
+			setShape(gc, shapeIn, displayIn);
+			
+			return gc;
 		}
-		
-		public void clickAction(String[] validInput, TextField input, GraphicsContext gc,TextArea displayIn)
-		{	
-			//check if the input is valid.
-			if(Arrays.asList(validInput).contains(input.getText().toLowerCase()))
-			{
-	
-				if (validInput == validColors)
-				{
-					color = input.getText().toLowerCase();
-					drawShape(gc, shape, color, displayIn);				
-				}
-				else if (validInput == validShapes)
-				{
-					shape = input.getText().toLowerCase();
-					drawShape(gc, shape, color, displayIn);				
-				}			
-	
-			}
-			else
-			{
-				if (validInput == validColors)
-				{
-					displayIn.setText("Please enter a valid color. " + Arrays.toString(validColors)); 				
-				}
-				else if (validInput == validShapes)
-				{
-					displayIn.setText("Please enter a valid shape. " + Arrays.toString(validShapes)); 				
-				}				
-			}
-		}
-		
-		
-
 		
 
 		//main
@@ -217,9 +196,7 @@
 			launch(args);
 			
 		}
-		
 	
-		
 		
 	}	
 		
