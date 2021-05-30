@@ -64,7 +64,7 @@
 			  }
 			  else
 			  {
-				  display.setText("Please enter a valid color. " + Arrays.toString(validColors));
+				  display.setText("Please enter a valid shape. " + Arrays.toString(validShapes));
 			  }
    
 			});			
@@ -81,7 +81,7 @@
 				}
 				else
 				{
-					display.setText("Please enter a valid shape. " + Arrays.toString(validShapes)); 						
+					display.setText("Please enter a valid color. " + Arrays.toString(validColors)); 						
 				}
 	     
 			});			
